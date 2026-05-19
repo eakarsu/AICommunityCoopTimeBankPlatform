@@ -16,6 +16,7 @@ import GovernanceProposal from './pages/GovernanceProposal.jsx';
 import SkillGap from './pages/SkillGap.jsx';
 import ListingFromDescription from './pages/ListingFromDescription.jsx';
 import ImpactReport from './pages/ImpactReport.jsx';
+import CustomViewsPage from './pages/CustomViewsPage.jsx';
 
 // // === Batch 02 Gaps & Frontend Mounts ===
 import CfAiPoweredTimeMatchingEngine from './pages/CfAiPoweredTimeMatchingEngine.jsx';
@@ -46,6 +47,10 @@ function Sidebar() {
           {t.title}
         </NavLink>
       ))}
+      <div style={{ marginTop: 12, fontSize: '0.75rem', textTransform: 'uppercase', color: '#9ca3af' }}>Custom Views</div>
+      <NavLink to="/custom-views" className={({ isActive }) => isActive ? 'active' : ''}>
+        TimeBank Views
+      </NavLink>
       <div className="user-box">
         <div>Signed in as</div>
         <div><strong>{user?.name || user?.email}</strong></div>
@@ -106,6 +111,7 @@ export default function App() {
       <Route path="/tools/skill-gap" element={<ProtectedShell><SkillGap /></ProtectedShell>} />
       <Route path="/tools/listing-from-description" element={<ProtectedShell><ListingFromDescription /></ProtectedShell>} />
       <Route path="/tools/impact-report" element={<ProtectedShell><ImpactReport /></ProtectedShell>} />
+      <Route path="/custom-views" element={<ProtectedShell><CustomViewsPage /></ProtectedShell>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

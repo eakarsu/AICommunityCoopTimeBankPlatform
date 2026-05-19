@@ -51,6 +51,9 @@ app.use('/api/gap-no-analytics-or-reporting', require('./routes/gap_no_analytics
 // // === Batch 02 Gaps & Frontend Mounts ===
 app.use('/api/gap-no-notifications-webhooks-or-third-party-integrations', require('./routes/gap_no_notifications_webhooks_or_third_party_integrations'));
 
+// === Custom Views (mounted BEFORE 404) ===
+app.use('/api/custom-views', require('./routes/customViews'));
+
 app.listen(PORT, () => {
   console.log(`AICommunityCoopTimeBankPlatform backend running on port ${PORT}`);
 });
