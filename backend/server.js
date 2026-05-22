@@ -21,6 +21,7 @@ app.use('/api/ai', require('./routes/demandForecast'));
 app.use('/api/ai', require('./routes/multimodalIntake'));
 
 app.use('/api/ai', require('./routes/peerReview'));
+app.use('/api/reciprocity-balance', require('./routes/reciprocityBalance'));
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'AICommunityCoopTimeBankPlatform', timestamp: new Date().toISOString() });
 });

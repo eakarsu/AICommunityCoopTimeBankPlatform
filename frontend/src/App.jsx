@@ -16,6 +16,7 @@ import GovernanceProposal from './pages/GovernanceProposal.jsx';
 import SkillGap from './pages/SkillGap.jsx';
 import ListingFromDescription from './pages/ListingFromDescription.jsx';
 import ImpactReport from './pages/ImpactReport.jsx';
+import ReciprocityBalance from './pages/ReciprocityBalance.jsx';
 import CustomViewsPage from './pages/CustomViewsPage.jsx';
 
 // // === Batch 02 Gaps & Frontend Mounts ===
@@ -32,6 +33,11 @@ import GapNoMatchingDiscoveryInterface from './pages/GapNoMatchingDiscoveryInter
 import GapNoGovernanceVotingModule from './pages/GapNoGovernanceVotingModule.jsx';
 import GapNoAnalyticsOrReporting from './pages/GapNoAnalyticsOrReporting.jsx';
 import GapNoNotificationsWebhooksOrThirdPartyIntegrations from './pages/GapNoNotificationsWebhooksOrThirdPartyIntegrations.jsx';
+
+import CodexCustomVizFeature from './pages/CodexCustomVizFeature';
+import CodexOperationsFeature from './pages/CodexOperationsFeature';
+
+import TimelineView from './pages/TimelineView';
 
 function Sidebar() {
   const { user, logout } = useAuth();
@@ -50,6 +56,9 @@ function Sidebar() {
       <div style={{ marginTop: 12, fontSize: '0.75rem', textTransform: 'uppercase', color: '#9ca3af' }}>Custom Views</div>
       <NavLink to="/custom-views" className={({ isActive }) => isActive ? 'active' : ''}>
         TimeBank Views
+      </NavLink>
+      <NavLink to="/tools/reciprocity-balance" className={({ isActive }) => isActive ? 'active' : ''}>
+        Reciprocity Balance
       </NavLink>
       <div className="user-box">
         <div>Signed in as</div>
@@ -78,6 +87,10 @@ export default function App() {
   if (!user) {
     return (
       <Routes>
+        <Route path="/insights/timeline" element={<TimelineView />} />
+        <Route path="/codex/custom-viz" element={<CodexCustomVizFeature />} />
+        <Route path="/codex/operations" element={<CodexOperationsFeature />} />
+
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<Login />} />
       
@@ -111,6 +124,7 @@ export default function App() {
       <Route path="/tools/skill-gap" element={<ProtectedShell><SkillGap /></ProtectedShell>} />
       <Route path="/tools/listing-from-description" element={<ProtectedShell><ListingFromDescription /></ProtectedShell>} />
       <Route path="/tools/impact-report" element={<ProtectedShell><ImpactReport /></ProtectedShell>} />
+      <Route path="/tools/reciprocity-balance" element={<ProtectedShell><ReciprocityBalance /></ProtectedShell>} />
       <Route path="/custom-views" element={<ProtectedShell><CustomViewsPage /></ProtectedShell>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
