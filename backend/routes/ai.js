@@ -46,22 +46,6 @@ async function persistResult(userId, endpoint, params, result) {
   }
 }
 
-async function ensureAiTables() {
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS ai_results (
-      id SERIAL PRIMARY KEY,
-      user_id INTEGER,
-      endpoint VARCHAR(100) NOT NULL,
-      request_params JSONB,
-      result_text TEXT NOT NULL,
-      model_used VARCHAR(100),
-      tokens_used INTEGER,
-      created_at TIMESTAMP DEFAULT NOW()
-    );
-  `);
-}
-ensureAiTables().catch(console.error);
-
 router.get('/history', auth, async (req, res) => {
   try {
     const { endpoint, limit = 20, offset = 0 } = req.query;

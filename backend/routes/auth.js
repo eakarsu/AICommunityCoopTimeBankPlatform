@@ -2,24 +2,15 @@ const express = require('express');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
+const auth = require('../middleware/auth');
 const router = express.Router();
-
-async function ensureUsersTable() {
-  await pool.query(`
-    CREATE TABLE IF NOT EXISTS users (
-      id SERIAL PRIMARY KEY,
-      name VARCHAR(255),
-      email VARCHAR(255) UNIQUE NOT NULL,
-      password VARCHAR(255) NOT NULL,
-      created_at TIMESTAMP DEFAULT NOW()
-    );
-  `);
-}
-ensureUsersTable().catch(console.error);
 
 router.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
+    if (!name || !email || typeof password !== 'string' || password.length < 12) {
+      return res.status(400).json({ error: 'Name, email, and a password of at least 12 characters are required' });
+    }
     const existingUser = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
     if (existingUser.rows.length > 0) {
       return res.status(400).json({ error: 'Email already registered' });
@@ -29,7 +20,7 @@ router.post('/register', async (req, res) => {
       'INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email',
       [name, email, hashedPassword]
     );
-    const token = jwt.sign({ id: result.rows[0].id, email }, process.env.JWT_SECRET || 'dev-secret', { expiresIn: '7d' });
+    const token = jwt.sign({ id: result.rows[0].id, email, role: 'member' }, process.env.JWT_SECRET, { expiresIn: '24h' });
     res.json({ user: result.rows[0], token });
   } catch (err) {
     console.error(err);
@@ -49,11 +40,25 @@ router.post('/login', async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ error: 'Invalid credentials' });
     }
-    const token = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_SECRET || 'dev-secret', { expiresIn: '7d' });
+    const token = jwt.sign({ id: user.id, email: user.email, role: 'member' }, process.env.JWT_SECRET, { expiresIn: '24h' });
     res.json({ user: { id: user.id, name: user.name, email: user.email }, token });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+router.get('/me', auth, async (req, res) => {
+  try {
+    const result = await pool.query(
+      'SELECT id, name, email FROM users WHERE id = $1',
+      [req.user.id]
+    );
+    if (!result.rows.length) return res.status(404).json({ error: 'User not found' });
+    return res.json({ user: { ...result.rows[0], role: req.user.role || 'member' } });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Server error' });
   }
 });
 

@@ -26,13 +26,6 @@ import CfPredictiveDemandForecasting from './pages/CfPredictiveDemandForecasting
 import CfMultiModalIntakeVoicePhoto from './pages/CfMultiModalIntakeVoicePhoto.jsx';
 import CfBlockchainBackedLedger from './pages/CfBlockchainBackedLedger.jsx';
 import CfPeerReviewCertification from './pages/CfPeerReviewCertification.jsx';
-import GapNoMemberMatchingNoSkillNeedsNlpAnalysisNoReputation from './pages/GapNoMemberMatchingNoSkillNeedsNlpAnalysisNoReputation.jsx';
-import GapNoMemberDirectoryOrProfileManagement from './pages/GapNoMemberDirectoryOrProfileManagement.jsx';
-import GapNoTimeCreditLedgerOrTransactionHistory from './pages/GapNoTimeCreditLedgerOrTransactionHistory.jsx';
-import GapNoMatchingDiscoveryInterface from './pages/GapNoMatchingDiscoveryInterface.jsx';
-import GapNoGovernanceVotingModule from './pages/GapNoGovernanceVotingModule.jsx';
-import GapNoAnalyticsOrReporting from './pages/GapNoAnalyticsOrReporting.jsx';
-import GapNoNotificationsWebhooksOrThirdPartyIntegrations from './pages/GapNoNotificationsWebhooksOrThirdPartyIntegrations.jsx';
 
 import CodexCustomVizFeature from './pages/CodexCustomVizFeature';
 import CodexOperationsFeature from './pages/CodexOperationsFeature';
@@ -101,13 +94,6 @@ export default function App() {
         <Route path="/cf/multi-modal-intake-voice-photo" element={<CfMultiModalIntakeVoicePhoto />} />
         <Route path="/cf/blockchain-backed-ledger" element={<CfBlockchainBackedLedger />} />
         <Route path="/cf/peer-review-certification" element={<CfPeerReviewCertification />} />
-        <Route path="/gap/no-member-matching-no-skill-needs-nlp-analysis-no-reputation" element={<GapNoMemberMatchingNoSkillNeedsNlpAnalysisNoReputation />} />
-        <Route path="/gap/no-member-directory-or-profile-management" element={<GapNoMemberDirectoryOrProfileManagement />} />
-        <Route path="/gap/no-time-credit-ledger-or-transaction-history" element={<GapNoTimeCreditLedgerOrTransactionHistory />} />
-        <Route path="/gap/no-matching-discovery-interface" element={<GapNoMatchingDiscoveryInterface />} />
-        <Route path="/gap/no-governance-voting-module" element={<GapNoGovernanceVotingModule />} />
-        <Route path="/gap/no-analytics-or-reporting" element={<GapNoAnalyticsOrReporting />} />
-        <Route path="/gap/no-notifications-webhooks-or-third-party-integrations" element={<GapNoNotificationsWebhooksOrThirdPartyIntegrations />} />
       </Routes>
     );
   }
