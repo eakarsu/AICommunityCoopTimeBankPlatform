@@ -7,5 +7,5 @@ set -a; . "$root/.env"; set +a
 cleanup(){ kill "${backend_pid:-}" "${frontend_pid:-}" 2>/dev/null || true; }
 trap cleanup EXIT INT TERM
 (cd "$root/backend" && npm start) & backend_pid=$!
-(cd "$root/frontend" && npm run dev) & frontend_pid=$!
+(cd "$root/frontend" && npm run dev -- --host 127.0.0.1 --port "${FRONTEND_PORT:-3000}") & frontend_pid=$!
 wait "$backend_pid" "$frontend_pid"
