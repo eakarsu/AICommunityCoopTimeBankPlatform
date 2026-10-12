@@ -28,6 +28,14 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'AICommunityCoopTimeBankPlatform', timestamp: new Date().toISOString() });
 });
 
+
+// Advisory AI reports only; native execution and approval routes stay unchanged.
+const aiWorkspaceSupport = require("./aiWorkspaceAdapters.cjs");
+const aiWorkspaceDatabase = require("./db.js");
+app.use('/api/report-workspace', require("./aiWorkspace.cjs").createAIWorkspaceRouter({
+  pool: aiWorkspaceDatabase, authenticateToken: require("./middleware/auth.js"),
+  aiRateLimiter: aiWorkspaceSupport.createWorkspaceLimiter(), features: require("./aiWorkspaceFeatures.json"),
+}));
 app.use((err, req, res, next) => {
   console.error('Unhandled error:', err.message);
   res.status(err.statusCode || 500).json({ error: err.message || 'Something went wrong' });

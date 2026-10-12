@@ -67,6 +67,18 @@ async function ensureSchema() {
           ('Pet Care',        'min_hours',       '0.5',    true,  'Pet walks at minimum 30 minutes')
       `);
     }
+    await pool.query(`
+      INSERT INTO barter_rules (service_category, rule_type, constraint_value, active, description)
+      SELECT seed.service_category, seed.rule_type, seed.constraint_value, seed.active, seed.description
+      FROM (VALUES
+        ('Accessibility Support', 'min_hours',       '0.5',  true, 'Demo rule: accessibility support may be booked in 30-minute increments'),
+        ('Language Exchange',     'exchange_ratio',  '1:1',  true, 'Demo rule: conversation practice uses the standard hour-for-hour exchange'),
+        ('Community Organizing',  'max_hours',       '6',    true, 'Demo rule: planning sessions are capped at 6 hours'),
+        ('Errands',               'requires_review', 'false', true, 'Demo rule: routine errands do not require steward review'),
+        ('Wellness Companion',    'exchange_ratio',  '1:1',  true, 'Demo rule: non-clinical companionship uses the standard exchange ratio')
+      ) AS seed(service_category, rule_type, constraint_value, active, description)
+      WHERE NOT EXISTS (SELECT 1 FROM barter_rules existing WHERE existing.description = seed.description)
+    `);
     _schemaReady = true;
   } catch (e) {
     console.error('[customViews] schema bootstrap error:', e.message);
@@ -120,6 +132,13 @@ router.get('/hours-exchange-network', async (_req, res) => {
       { id: 'm6', name: 'David Wright',    role: 'Member'  },
       { id: 'm7', name: 'Yuki Tanaka',     role: 'Member'  },
       { id: 'm8', name: 'Priya Singh',     role: 'Member'  },
+      { id: 'm9', name: 'Elena Rivera',    role: 'Member'  },
+      { id: 'm10', name: 'Omar Hassan',    role: 'Member'  },
+      { id: 'm11', name: 'Grace Kim',      role: 'Member'  },
+      { id: 'm12', name: 'Mateo Garcia',  role: 'Member'  },
+      { id: 'm13', name: 'Fatima Ali',    role: 'Member'  },
+      { id: 'm14', name: 'Ethan Brooks',  role: 'Member'  },
+      { id: 'm15', name: 'Nina Shah',     role: 'Member'  },
     ];
 
     // Try DB-driven edges
@@ -147,6 +166,9 @@ router.get('/hours-exchange-network', async (_req, res) => {
         ['m4','m5', 7.0], ['m5','m6', 2.0], ['m6','m7', 4.0],
         ['m7','m8', 3.5], ['m8','m1', 6.5], ['m3','m6', 2.0],
         ['m2','m7', 1.0], ['m4','m8', 5.5], ['m5','m8', 2.5],
+        ['m9','m1', 2.0], ['m10','m2', 3.0], ['m11','m3', 1.5],
+        ['m12','m4', 4.0], ['m13','m5', 2.5], ['m14','m6', 3.5],
+        ['m15','m7', 2.0],
       ];
       edges = pairs.map(([s, t, h]) => ({ source: s, target: t, hours: h }));
     }
@@ -180,7 +202,7 @@ router.get('/hours-exchange-network', async (_req, res) => {
 // ─── 2. VIZ — Member × Service activity heatmap ─────────────────────────────
 router.get('/member-activity-heatmap', async (_req, res) => {
   try {
-    const members = ['Sofia Martinez', 'Liam Chen', 'Aisha Khan', 'Noah Patel', 'Maria Lopez', 'David Wright', 'Yuki Tanaka', 'Priya Singh'];
+    const members = ['Sofia Martinez', 'Liam Chen', 'Aisha Khan', 'Noah Patel', 'Maria Lopez', 'David Wright', 'Yuki Tanaka', 'Priya Singh', 'Elena Rivera', 'Omar Hassan', 'Grace Kim', 'Mateo Garcia', 'Fatima Ali', 'Ethan Brooks', 'Nina Shah'];
     const services = ['Childcare', 'Tutoring', 'Home Repair', 'Eldercare', 'Garden Help', 'Cooking / Meals', 'Transportation', 'Pet Care'];
 
     // Deterministic 0..12 hours/cell

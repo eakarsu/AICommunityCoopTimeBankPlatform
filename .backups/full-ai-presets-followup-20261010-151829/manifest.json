@@ -1,0 +1,15 @@
+{
+  "project": "AICommunityCoopTimeBankPlatform",
+  "createdAt": "2026-10-10T15:18:29-04:00",
+  "purpose": "Pre-edit backup for full AI presets follow-up",
+  "files": [
+    "frontend/src/AiToolPage.jsx",
+    "frontend/src/components/AIResultView.jsx",
+    "frontend/src/components/SharedRecordUI.css",
+    "frontend/src/components/AIWorkspace.jsx",
+    "frontend/src/components/AIWorkspace.css",
+    "frontend/src/components/AIReport.jsx",
+    "frontend/src/pages/Login.jsx",
+    "backend-customViews.js"
+  ]
+}

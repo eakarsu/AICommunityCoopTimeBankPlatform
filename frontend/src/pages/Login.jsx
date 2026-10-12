@@ -8,7 +8,21 @@ export default function Login() {
   const [err, setErr] = useState('');
   const [busy, setBusy] = useState(false);
   const nav = useNavigate();
-  const { login } = useAuth();
+  const { login, demoLogin } = useAuth();
+
+  async function onDemoLogin() {
+    if (busy) return;
+    setErr('');
+    setBusy(true);
+    try {
+      await demoLogin();
+      nav('/');
+    } catch (e) {
+      setErr(e.message);
+    } finally {
+      setBusy(false);
+    }
+  }
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -40,12 +54,12 @@ export default function Login() {
         {err && <div className="error">{err}</div>}
         <button
           type="button"
-          onClick={() => { setEmail(import.meta.env.VITE_DEMO_EMAIL || ''); setPassword(import.meta.env.VITE_DEMO_PASSWORD || ''); }}
-          disabled={!import.meta.env.VITE_DEMO_EMAIL || !import.meta.env.VITE_DEMO_PASSWORD}
-          aria-label="Auto Fill Demo Credentials"
+          onClick={onDemoLogin}
+          disabled={busy}
+          aria-label="Log In as Demo"
           style={{ width: '100%', marginBottom: '12px', padding: '10px 14px', borderRadius: '8px', border: '1px solid currentColor', background: 'transparent', cursor: 'pointer' }}
         >
-          Auto Fill Demo Credentials
+          Log In as Demo
         </button>
         <button className="primary" disabled={busy}>{busy ? 'Signing in...' : 'Sign in'}</button>
       </form>

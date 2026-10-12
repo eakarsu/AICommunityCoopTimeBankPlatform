@@ -26,6 +26,14 @@ export function AuthProvider({ children }) {
     return data.user;
   }
 
+  async function demoLogin() {
+    const data = await apiFetch('/api/auth/demo-login', { method: 'POST' });
+    setToken(data.token);
+    localStorage.setItem('auth_user', JSON.stringify(data.user));
+    setUser(data.user);
+    return data.user;
+  }
+
   async function register(name, email, password) {
     const data = await apiFetch('/api/auth/register', {
       method: 'POST',
@@ -44,7 +52,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, ready, login, register, logout }}>
+    <AuthContext.Provider value={{ user, ready, login, demoLogin, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

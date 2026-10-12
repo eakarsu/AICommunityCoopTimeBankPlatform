@@ -19,8 +19,9 @@ export default function HoursExchangeNetwork() {
   if (loading) return <div className="card">Loading hours-exchange network…</div>;
   if (err) return <div className="card" style={{ color: '#b91c1c' }}>Error: {err}</div>;
   if (!data) return null;
+  if (!Array.isArray(data.nodes) || !Array.isArray(data.edges)) return <div className="card" role="alert">Error: The exchange network response is invalid.</div>;
 
-  const { nodes = [], edges = [] } = data;
+  const { nodes, edges } = data;
   const maxHours = Math.max(1, ...edges.map((e) => e.hours || 0));
   const byId = Object.fromEntries(nodes.map((n) => [n.id, n]));
 

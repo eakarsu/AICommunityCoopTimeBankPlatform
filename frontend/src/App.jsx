@@ -1,3 +1,4 @@
+import AIReportLibrary from "./components/AIReportLibrary";
 import React from 'react';
 import { Routes, Route, NavLink, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from './AuthContext.jsx';
@@ -58,7 +59,7 @@ function Sidebar() {
         <div><strong>{user?.name || user?.email}</strong></div>
         <button onClick={onLogout}>Sign out</button>
       </div>
-    </nav>
+    <AIReportLibrary /></nav>
   );
 }
 
@@ -112,6 +113,7 @@ export default function App() {
       <Route path="/tools/impact-report" element={<ProtectedShell><ImpactReport /></ProtectedShell>} />
       <Route path="/tools/reciprocity-balance" element={<ProtectedShell><ReciprocityBalance /></ProtectedShell>} />
       <Route path="/custom-views" element={<ProtectedShell><CustomViewsPage /></ProtectedShell>} />
+      <Route path="/codex/operations" element={<ProtectedShell><CodexOperationsFeature /></ProtectedShell>} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

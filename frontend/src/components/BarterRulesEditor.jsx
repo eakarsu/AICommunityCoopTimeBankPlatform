@@ -22,7 +22,11 @@ export default function BarterRulesEditor() {
   const load = () => {
     setLoading(true);
     apiFetch('/api/custom-views/barter-rules')
-      .then((d) => { setRules(d.rules || []); setTypes(d.valid_rule_types || []); })
+      .then((d) => {
+        setRules(Array.isArray(d?.rules) ? d.rules : []);
+        setTypes(Array.isArray(d?.valid_rule_types) ? d.valid_rule_types : []);
+        if (!Array.isArray(d?.rules)) setErr('Rules response is unavailable or invalid.');
+      })
       .catch((e) => setErr(e.message || 'Failed to load rules'))
       .finally(() => setLoading(false));
   };

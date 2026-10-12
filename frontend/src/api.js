@@ -23,6 +23,6 @@ export async function apiFetch(path, options = {}) {
   return body;
 }
 
-export function postJson(path, payload) {
-  return apiFetch(path, { method: 'POST', body: JSON.stringify(payload || {}) });
+export function postJson(path, payload, requestOptions = {}) {
+  return apiFetch(path, { ...requestOptions, method: 'POST', body: JSON.stringify(payload || {}) });
 }

@@ -1,9 +1,21 @@
 import React, { useMemo, useState } from 'react';
 
 const initialItems = [
-  { id: 1, owner: 'Ops', priority: 'High', status: 'Ready', task: 'Review exception queue' },
-  { id: 2, owner: 'AI', priority: 'Medium', status: 'In progress', task: 'Draft recommended next actions' },
-  { id: 3, owner: 'Compliance', priority: 'Low', status: 'Queued', task: 'Attach audit evidence' },
+  { id: 1, owner: 'Steward', priority: 'High', status: 'Ready', task: 'Review exchange exception queue' },
+  { id: 2, owner: 'Coordinator', priority: 'Medium', status: 'In progress', task: 'Draft follow-up actions for unmatched requests' },
+  { id: 3, owner: 'Steward', priority: 'Low', status: 'Queued', task: 'Attach exchange audit evidence' },
+  { id: 4, owner: 'Coordinator', priority: 'High', status: 'Queued', task: 'Confirm pending childcare exchanges' },
+  { id: 5, owner: 'Member support', priority: 'Medium', status: 'Ready', task: 'Review new member onboarding questions' },
+  { id: 6, owner: 'Steward', priority: 'Medium', status: 'Queued', task: 'Check disputed time credit entries' },
+  { id: 7, owner: 'Coordinator', priority: 'Low', status: 'Ready', task: 'Update tutoring availability' },
+  { id: 8, owner: 'Member support', priority: 'Medium', status: 'Queued', task: 'Follow up on accessibility requests' },
+  { id: 9, owner: 'Steward', priority: 'High', status: 'Ready', task: 'Review home repair safety notes' },
+  { id: 10, owner: 'Coordinator', priority: 'Medium', status: 'Queued', task: 'Match garden help requests' },
+  { id: 11, owner: 'Member support', priority: 'Low', status: 'In progress', task: 'Confirm language exchange preferences' },
+  { id: 12, owner: 'Steward', priority: 'Medium', status: 'Queued', task: 'Review barter rule feedback' },
+  { id: 13, owner: 'Coordinator', priority: 'Medium', status: 'Ready', task: 'Confirm transportation scheduling' },
+  { id: 14, owner: 'Member support', priority: 'Low', status: 'Queued', task: 'Follow up on meal preparation offers' },
+  { id: 15, owner: 'Steward', priority: 'Medium', status: 'Ready', task: 'Check weekly exchange summaries' },
 ];
 
 export default function CodexOperationsFeature() {

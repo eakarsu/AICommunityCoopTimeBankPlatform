@@ -19,6 +19,7 @@ export default function MemberActivityHeatmap() {
   if (loading) return <div className="card">Loading member activity heatmap…</div>;
   if (err) return <div className="card" style={{ color: '#b91c1c' }}>Error: {err}</div>;
   if (!data) return null;
+  if (!Array.isArray(data.members) || !Array.isArray(data.services) || !Array.isArray(data.matrix)) return <div className="card" role="alert">Error: The activity heatmap response is invalid.</div>;
 
   const { members, services, matrix } = data;
   const colorFor = (v) => {
@@ -49,7 +50,7 @@ export default function MemberActivityHeatmap() {
               <tr key={mi}>
                 <td style={{ padding: 6, fontWeight: 600, background: '#fafafa', border: '1px solid #e5e7eb' }}>{m}</td>
                 {services.map((s, si) => {
-                  const v = matrix[mi][si];
+                  const v = Array.isArray(matrix[mi]) && Number.isFinite(Number(matrix[mi][si])) ? Number(matrix[mi][si]) : 0;
                   return (
                     <td
                       key={si}
@@ -71,7 +72,7 @@ export default function MemberActivityHeatmap() {
         </table>
       </div>
       <div style={{ display: 'flex', gap: 14, marginTop: 10, fontSize: 12, flexWrap: 'wrap' }}>
-        {(data.legend || []).map((l, i) => (
+        {(Array.isArray(data.legend) ? data.legend : []).map((l, i) => (
           <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
             <span style={{ display: 'inline-block', width: 14, height: 14, background: colorFor(l.min + 1), borderRadius: 3 }} />
             {l.label} (≥{l.min}h)

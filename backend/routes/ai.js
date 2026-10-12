@@ -8,6 +8,9 @@ const SERVICE_TITLE = 'AI Community Coop Time Bank Platform';
 
 async function callOpenRouter(prompt, systemPrompt, model) {
   const chosenModel = model || process.env.OPENROUTER_MODEL || 'anthropic/claude-haiku-4.5';
+  const unavailable = { content: 'AI report unavailable. The model provider could not complete this request. No report was generated or saved; check the server provider configuration and try again.', model: null, tokens: null, unavailable: true };
+  if (!process.env.OPENROUTER_API_KEY) return unavailable;
+  try {
   const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -25,16 +28,19 @@ async function callOpenRouter(prompt, systemPrompt, model) {
       max_tokens: 3000,
     }),
   });
+  if (!response.ok) return unavailable;
   const data = await response.json();
-  if (data.error) throw new Error(data.error.message || 'OpenRouter API error');
+  if (data.error || typeof data.choices?.[0]?.message?.content !== 'string' || !data.choices[0].message.content.trim()) return unavailable;
   return {
     content: data.choices[0].message.content,
     model: chosenModel,
     tokens: data.usage?.total_tokens || null,
   };
+  } catch (_) { return unavailable; }
 }
 
 async function persistResult(userId, endpoint, params, result) {
+  if (result.unavailable) return;
   try {
     await pool.query(
       `INSERT INTO ai_results (user_id, endpoint, request_params, result_text, model_used, tokens_used)
